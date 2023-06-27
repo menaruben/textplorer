@@ -52,17 +52,14 @@ fn main() {
     let mut paths: Vec<String> = Vec::new();
 
     loop {
-        // println!("{}", cwd);
         paths = get_dir_entries(&cwd);
         let ans = Select::new("", paths.clone()).prompt();
 
         match ans {
             Ok(choice) => {
                 if metadata(&choice).unwrap().is_dir() {
-                    // set current dir changes the cwd to the parent folder of the argument given
                     cwd = get_absolute_path(&choice);
                     let _ = env::set_current_dir(cwd.clone());
-                    // cwd = choice.clone();
                 } else {
                     if cfg!(target_os = "windows") {
                         let _ = Command::new("cmd")
